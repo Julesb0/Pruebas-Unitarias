@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "actividadBinas": "Implemente GitHub Actions en su proyecto de pruebas unitarias, integrando los ejercicios desarrollados y socializados previamente. Para la fecha del 15 de octubre, deberá presentar su proyecto con un mínimo de ocho (8) commits que evidencien los avances y procesos realizados. Durante la revisión, se verificará que los jobs configurados en el workflow se ejecuten correctamente y sin presentar errores.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
