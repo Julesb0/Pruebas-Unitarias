@@ -9,7 +9,7 @@ import LayoutsView from "../views/LayoutsView";
 import SpeechDemoView from "../views/SpeechDemoView";
 import GeometryExplorer from "../views/GeometryExplorer";
 import SettingsView from "../views/SettingsView";
-import TablasMul from "../views/TablasMultiplicar";
+import TablasMul from "../views/TablasMul";
 import ConversorUnid from "../views/ConversorUnid";
 import ValidContrasena from "../views/ValidContrasena";
 import ContadorClics from "../views/ContadorClics";
