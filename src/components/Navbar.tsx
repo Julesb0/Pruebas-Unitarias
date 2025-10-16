@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className="h-14 sticky top-0 z-10 bg-white/70 dark:bg-slate-900/60 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+      <div className="container mx-auto px-4 h-full flex items-center justify-between gap-4">
         {/* Lado izquierdo: logo + marca */}
         <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-100">
           <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500 text-white">
@@ -32,6 +32,8 @@ const Navbar: React.FC = () => {
           </div>
           <span>UCC : Prácticas Desarrollo Multimedia</span>
         </div>
+
+  
 
         {/* Lado derecho: botón de tema */}
         <div className="flex items-center gap-2">

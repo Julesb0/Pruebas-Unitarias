@@ -1,31 +1,41 @@
-// src/components/ColorPicker.tsx
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function ColorPicker() {
-  const [color, setColor] = useState<string>(() => {
-    return localStorage.getItem("selectedColor") || "#ffffff";
-  });
+const LOCAL_STORAGE_KEY = "colorPickerColor";
+
+const ColorPicker: React.FC = () => {
+  const [color, setColor] = useState<string>("#ffffff");
 
   useEffect(() => {
-    localStorage.setItem("selectedColor", color);
+    const savedColor = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedColor) setColor(savedColor);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, color);
   }, [color]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setColor(e.target.value);
+  };
+
   return (
-    <div className="p-4 border rounded-lg shadow-md bg-white dark:bg-slate-800">
-      <h2 className="text-lg font-bold mb-2">Selector de Colores</h2>
-      <label htmlFor="color-input" className="block mb-2">Color</label>
+    <div className="p-4 text-center">
+      <h2 className="text-xl font-bold mb-2 text-white">Selector de Colores</h2>
       <input
-        id="color-input"
         type="color"
         value={color}
-        onChange={(e) => setColor(e.target.value)}
-        className="w-16 h-10 border cursor-pointer"
+        onChange={handleChange}
+        data-testid="color-input"
+        className="w-12 h-12 border-2 border-slate-300 rounded-full mb-4"
       />
       <div
-        data-testid="color-box"
-        className="mt-4 w-32 h-32 border rounded-lg shadow"
+        data-testid="color-div"
+        className="w-32 h-32 mx-auto rounded-lg border mt-4"
         style={{ backgroundColor: color }}
-      ></div>
+      />
+      <div className="mt-2 text-white">Color actual: {color}</div>
     </div>
   );
-}
+};
+
+export default ColorPicker;

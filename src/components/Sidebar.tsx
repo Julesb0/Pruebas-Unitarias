@@ -11,7 +11,18 @@ const items: SidebarItem[] = [
   { label: "Responsive Layouts", route: "/layouts" },
   { label: "Text-to-Speech", route: "/tts" },
   { label: "Figuras Geometricas", route: "/three_2" },
+  { label: "Reloj Digital", route: "/clock" },
+  { label: "Contador Regresivo", route: "/countdown" },
+  { label: "Selector de Colores", route: "/color" },
+  { label: "Buscador en Lista", route: "/search" },
+  // Extras importados
+  { label: "Contador de Clics", route: "/contador" },
+  { label: "Conversor de Unidades", route: "/conversor" },
+  { label: "Lista de Tareas", route: "/tareas" },
+  { label: "Tablas de Multiplicar", route: "/tablas" },
+  { label: "Validar Contraseña", route: "/validar" },
 ];
+
 
 export default function Sidebar() {
   return (

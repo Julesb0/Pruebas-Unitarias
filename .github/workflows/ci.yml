@@ -1,22 +1,55 @@
-name: CI - Integrado
+name: CI_CALIDAD_SOFTWARE
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
-  workflow_dispatch: {}
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-test:
+    name: 🔨 Build & 🧪 Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      CI: true
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      - run: npm ci
-      - run: npm run lint || true
-      - run: npm run type-check || true
-      - run: npm run build || true
-      - run: npm test -- --silent || true
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: 📦 Install dependencies (npm ci)
+        run: npm ci
+
+      - name: 🧠 Type check (TS)
+        run: npm run type-check
+
+      - name: 🔍 Lint (ESLint)
+        run: npm run lint
+
+      - name: 🧪 Run tests (Jest)
+        run: npm test -- --ci
+
+      - name: 🏗️ Build (Vite)
+        run: npm run build
+
+      - name: 📤 Upload production build (artifact)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-node-${{ matrix.node-version }}
+          path: dist

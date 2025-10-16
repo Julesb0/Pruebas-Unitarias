@@ -1,51 +1,86 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import '@testing-library/jest-dom';
 import CountdownTimer from "./CountdownTimer";
-// Vitest proporciona globals (describe, it, expect, beforeEach). Evitamos importar @jest/globals
+import "@testing-library/jest-dom";
 
 describe("CountdownTimer", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
-
-  it("muestra el tiempo inicial correctamente", () => {
-    render(<CountdownTimer />);
-    const input = screen.getByPlaceholderText("Segundos") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "5" } });
-    fireEvent.click(screen.getByText("Iniciar"));
-
-    expect(screen.getByText("5")).toBeInTheDocument();
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
-  it("disminuye en intervalos de un segundo", () => {
+  test("muestra el tiempo inicial correctamente", () => {
     render(<CountdownTimer />);
-    const input = screen.getByPlaceholderText("Segundos") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "3" } });
-    fireEvent.click(screen.getByText("Iniciar"));
+    const timer = screen.getByTestId("countdown-timer");
+    expect(timer.textContent).toBe("--:--:--");
+    const input = screen.getByTestId("input-time");
+    fireEvent.change(input, { target: { value: "00:00:05" } });
+    expect(input).toHaveValue("00:00:05");
+  });
 
-    expect(screen.getByText("3")).toBeInTheDocument();
-
+  test("disminuye en intervalos de un segundo con formato HH:MM:SS", () => {
+    render(<CountdownTimer />);
+    const input = screen.getByTestId("input-time");
+    fireEvent.change(input, { target: { value: "00:00:03" } });
+    const btn = screen.getByTestId("start-btn");
+    fireEvent.click(btn);
+    const timer = screen.getByTestId("countdown-timer");
+    expect(timer.textContent).toBe("00:00:03");
     act(() => {
       jest.advanceTimersByTime(1000);
     });
-    expect(screen.getByText("2")).toBeInTheDocument();
-
+    expect(timer.textContent).toBe("00:00:02");
     act(() => {
       jest.advanceTimersByTime(1000);
     });
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(timer.textContent).toBe("00:00:01");
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(timer.textContent).toBe("00:00:00");
   });
 
-  it("se detiene en 0", () => {
+  test("se detiene en 0", () => {
     render(<CountdownTimer />);
-    const input = screen.getByPlaceholderText("Segundos") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "2" } });
-    fireEvent.click(screen.getByText("Iniciar"));
-
+    const input = screen.getByTestId("input-time");
+    fireEvent.change(input, { target: { value: "00:00:02" } });
+    const btn = screen.getByTestId("start-btn");
+    fireEvent.click(btn);
+    const timer = screen.getByTestId("countdown-timer");
     act(() => {
       jest.advanceTimersByTime(3000);
     });
+    expect(timer.textContent).toBe("00:00:00");
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+    expect(timer.textContent).toBe("00:00:00");
+  });
 
-    expect(screen.getByText("0")).toBeInTheDocument();
+  test("funciona correctamente con formato HH:MM", () => {
+    render(<CountdownTimer />);
+    const input = screen.getByTestId("input-time");
+    fireEvent.change(input, { target: { value: "00:02" } });
+    const btn = screen.getByTestId("start-btn");
+    fireEvent.click(btn);
+    const timer = screen.getByTestId("countdown-timer");
+    expect(timer.textContent).toBe("00:02");
+    act(() => {
+      jest.advanceTimersByTime(60000);
+    });
+    expect(timer.textContent).toBe("00:01");
+    act(() => {
+      jest.advanceTimersByTime(60000);
+    });
+    expect(timer.textContent).toBe("00:00");
+  });
+
+  test("muestra placeholder correcto inicialmente para formato HH:MM", () => {
+    render(<CountdownTimer />);
+    const input = screen.getByTestId("input-time");
+    fireEvent.change(input, { target: { value: "00:01" } });
+    const timer = screen.getByTestId("countdown-timer");
+    expect(timer.textContent).toBe("--:--");
   });
 });

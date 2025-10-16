@@ -1,4 +1,5 @@
-// src/routes/AppRoutes.tsx
+import SearchList from "../components/SearchList";
+import ColorPicker from "../components/ColorPicker";
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layout";
 
@@ -9,14 +10,14 @@ import LayoutsView from "../views/LayoutsView";
 import SpeechDemoView from "../views/SpeechDemoView";
 import GeometryExplorer from "../views/GeometryExplorer";
 import SettingsView from "../views/SettingsView";
-import TablasMul from "../views/TablasMul";
-import ConversorUnid from "../views/ConversorUnid";
-import ValidContrasena from "../views/ValidContrasena";
+import DigitalClock from "../components/DigitalClock";
+import CountdownTimer from "../components/CountdownTimer";
+// Extra views imported from upstream repo
 import ContadorClics from "../views/ContadorClics";
+import ConversorUnid from "../views/ConversorUnid";
 import ListaTareas from "../views/ListaTareas";
-import CuentaAtras from "../views/CuentaAtras";
-import ColorPicker from "../components/ColorPicker";
-import SearchList from "../components/SearchList";
+import TablasMul from "../views/TablasMul";
+import ValidContrasena from "../views/ValidContrasena";
 
 export default function AppRoutes() {
   return (
@@ -28,16 +29,16 @@ export default function AppRoutes() {
         <Route path="tts" element={<SpeechDemoView />} />
         <Route path="three_2" element={<GeometryExplorer />} />
         <Route path="settings" element={<SettingsView />} />
-
-        {/* Extra routes */}
-        <Route path="tablasmul" element={<TablasMul />} />
-        <Route path="conversorunid" element={<ConversorUnid />} />
-        <Route path="validcontrasena" element={<ValidContrasena />} />
-        <Route path="contadorclics" element={<ContadorClics />} />
-        <Route path="listareas" element={<ListaTareas />} />
-        <Route path="cuentaatras" element={<CuentaAtras />} />
-        <Route path="colorpicker" element={<ColorPicker />} />
-        <Route path="searchlist" element={<SearchList />} />
+        <Route path="clock" element={<DigitalClock />} />
+        <Route path="countdown" element={<CountdownTimer />} />
+        <Route path="color" element={<ColorPicker />} />
+        <Route path="search" element={<SearchList />} />
+        {/* Extra routes from upstream repo */}
+        <Route path="contador" element={<ContadorClics />} />
+        <Route path="conversor" element={<ConversorUnid />} />
+        <Route path="tareas" element={<ListaTareas />} />
+        <Route path="tablas" element={<TablasMul />} />
+        <Route path="validar" element={<ValidContrasena />} />
       </Route>
     </Routes>
   );

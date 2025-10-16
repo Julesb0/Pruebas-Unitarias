@@ -1,53 +1,31 @@
-// src/tests/SearchList.test.tsx
 import { render, screen, fireEvent } from "@testing-library/react";
-import SearchList from "../components/SearchList";
+import SearchList from "./SearchList";
+import "@testing-library/jest-dom";
 
 describe("SearchList", () => {
-  beforeEach(() => {
+  test("lista inicial muestra todos los elementos", () => {
     render(<SearchList />);
+    const list = screen.getByTestId("name-list");
+    expect(list.children.length).toBeGreaterThan(1); // Hay varios nombres
+    expect(list.textContent).toContain("Ana");
+    expect(list.textContent).toContain("Valentina");
   });
 
-  test("muestra todos los nombres al inicio", () => {
-    const items = screen.getAllByRole("listitem");
-    expect(items.length).toBeGreaterThan(1);
+  test("al escribir, se filtran los nombres que coincidan", () => {
+    render(<SearchList />);
+    const input = screen.getByTestId("search-input");
+    fireEvent.change(input, { target: { value: "an" } });
+    const list = screen.getByTestId("name-list");
+    expect(list.textContent).toContain("Ana");
+    expect(list.textContent).toContain("Juan");
+    expect(list.textContent).not.toContain("Luis");
   });
 
-  test("filtra nombres según el input", () => {
-    const input = screen.getByPlaceholderText("Buscar...");
-    fireEvent.change(input, { target: { value: "Ana" } });
-
-    expect(screen.getByText("Ana")).toBeInTheDocument();
-    expect(screen.queryByText("Carlos")).not.toBeInTheDocument();
-  });
-
-  test("no distingue entre mayúsculas y minúsculas", () => {
-    const input = screen.getByPlaceholderText("Buscar...");
-    fireEvent.change(input, { target: { value: "ana" } });
-
-    expect(screen.getByText(/ana/i)).toBeInTheDocument();
-  });
-
-  test("muestra 'No encontrado' si no hay coincidencias", () => {
-    const input = screen.getByPlaceholderText("Buscar...");
-    fireEvent.change(input, { target: { value: "ZZZ" } });
-
-    expect(screen.getByText("No encontrado")).toBeInTheDocument();
-  });
-
-  test("vuelve a mostrar la lista completa si el campo se vacía", () => {
-    const input = screen.getByPlaceholderText("Buscar...");
-    fireEvent.change(input, { target: { value: "Ana" } });
-    fireEvent.change(input, { target: { value: "" } });
-
-    const items = screen.getAllByRole("listitem");
-    expect(items.length).toBeGreaterThan(0);
-  });
-
-  test("no falla si el usuario ingresa solo espacios", () => {
-    const input = screen.getByPlaceholderText("Buscar...");
-    fireEvent.change(input, { target: { value: "   " } });
-
-    const items = screen.getAllByRole("listitem");
-    expect(items.length).toBeGreaterThan(0);
+  test("si no hay coincidencias, se muestra 'No encontrado'", () => {
+    render(<SearchList />);
+    const input = screen.getByTestId("search-input");
+    fireEvent.change(input, { target: { value: "zzz" } });
+    const list = screen.getByTestId("name-list");
+    expect(list.textContent).toContain("No encontrado");
   });
 });

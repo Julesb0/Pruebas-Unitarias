@@ -1,37 +1,45 @@
-// src/components/SearchList.tsx
-import { useState } from "react";
+import React, { useState } from "react";
 
-const initialNames = ["Ana", "Carlos", "Beatriz", "Daniel", "Elena", "Fernando", "Gabriela"];
+const NAMES = [
+  "Ana",
+  "Luis",
+  "Carlos",
+  "María",
+  "Pedro",
+  "Lucía",
+  "Juan",
+  "Sofía",
+  "Miguel",
+  "Valentina"
+];
 
-export default function SearchList() {
+const SearchList: React.FC = () => {
   const [query, setQuery] = useState("");
 
-  const filteredNames = initialNames.filter((name) =>
+  const filtered = NAMES.filter(name =>
     name.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
-    <div className="p-4 border rounded-lg shadow-md bg-white dark:bg-slate-800">
-      <h2 className="text-lg font-bold mb-2">Buscador en Lista</h2>
+    <div className="p-4 text-center">
+      <h2 className="text-xl font-bold mb-2 text-white">Buscador en Lista</h2>
       <input
         type="text"
-        placeholder="Buscar..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="border p-2 rounded w-full"
+        onChange={e => setQuery(e.target.value)}
+        placeholder="Buscar nombre..."
+        className="border rounded px-2 py-1 mb-4 text-white bg-gray-800 placeholder-gray-400 border-gray-600"
+        data-testid="search-input"
       />
-
-      <ul className="mt-4 space-y-1">
-        {filteredNames.length > 0 ? (
-          filteredNames.map((name, index) => (
-            <li key={index} className="p-1 border-b">
-              {name}
-            </li>
-          ))
+      <ul className="list-disc mx-auto w-fit text-left text-white" data-testid="name-list">
+        {filtered.length > 0 ? (
+          filtered.map(name => <li key={name} className="text-white">{name}</li>)
         ) : (
-          <li className="text-red-500">No encontrado</li>
+          <li className="text-red-400">No encontrado</li>
         )}
       </ul>
     </div>
   );
-}
+};
+
+export default SearchList;
