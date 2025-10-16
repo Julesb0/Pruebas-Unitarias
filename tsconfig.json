@@ -6,7 +6,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
-    /* Module resolution for Jest / Vitest */
+    /* Module resolution for Jest */
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -23,11 +23,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-
-    /* Tipos adicionales */
-    "types": ["vitest", "node"]
+    "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "vitest.config.ts"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
